@@ -20,11 +20,29 @@ public class Products {
     protected int weight;
     protected boolean status;
     
+    public Products()
+    {
+        id = 0;
+        name = "";
+        description = "";
+        amount = 0;
+        price = 0.0;
+        height = 0;
+        width = 0;
+        weight = 0;
+        status = false;
+    }
+    
     public Products(int _id, String _name, double _price)
     {
         id = _id;
         name = _name;
+        description = "";
+        amount = 0;
         price = _price;
+        height = 0;
+        width = 0;
+        weight = 0;
         status = true;
     }
     
@@ -35,6 +53,9 @@ public class Products {
         description = _desc;
         amount = _amount;
         price = _price;
+        height = 0;
+        width = 0;
+        weight = 0;
         status = true;
     }
     

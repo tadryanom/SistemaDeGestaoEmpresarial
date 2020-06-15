@@ -13,6 +13,19 @@ public class Clients extends Persons {
     protected int walletId;
     protected double walletBalance;
     
+    public Clients()
+    {
+        this.setId(0);
+        this.setName("");
+        this.setAge(0);
+        this.setAddress("");
+        this.setRg(0);
+        this.setCpf(0);
+        this.setStatus(false);
+        walletId = 0;
+        walletBalance = 0.0;
+    }
+    
     public Clients(int _id, String _name, int _age, String _addr, int _rg, int _cpf)
     {
         this.setId(_id);
@@ -22,6 +35,8 @@ public class Clients extends Persons {
         this.setRg(_rg);
         this.setCpf(_cpf);
         this.setStatus(true);
+        walletId = 0;
+        walletBalance = 0.0;
     }
     
     public Clients(int _id, String _name, int _age, String _addr, int _rg, int _cpf, int _wallet)
@@ -34,6 +49,7 @@ public class Clients extends Persons {
         this.setCpf(_cpf);
         this.setStatus(true);
         walletId =  _wallet;
+        walletBalance = 0.0;
     }
     
     public Clients(int _id, String _name, int _age, String _addr, int _rg, int _cpf, int _wallet, double _walletBal)

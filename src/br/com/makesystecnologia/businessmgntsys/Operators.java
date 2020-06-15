@@ -13,6 +13,19 @@ public class Operators extends Persons {
     protected String user;
     protected String pass;
     
+    public Operators()
+    {
+        this.setId(0);
+        this.setName("");
+        this.setAge(0);
+        this.setAddress("");
+        this.setRg(0);
+        this.setCpf(0);
+        this.setStatus(false);
+        user = "";
+        pass = "";
+    }    
+    
     public Operators(int _id, String _name, int _age, String _addr, int _rg, int _cpf)
     {
         this.setId(_id);
@@ -22,6 +35,8 @@ public class Operators extends Persons {
         this.setRg(_rg);
         this.setCpf(_cpf);
         this.setStatus(true);
+        user = "";
+        pass = "";
     }
     
     public Operators(int _id, String _name, int _age, String _addr, int _rg, int _cpf, String _user, String _pass)

@@ -14,6 +14,20 @@ public class Employees extends Persons {
     protected String description;
     protected double salary;
     
+    public Employees()
+    {
+        this.setId(0);
+        this.setName("");
+        this.setAge(0);
+        this.setAddress("");
+        this.setRg(0);
+        this.setCpf(0);
+        this.setStatus(false);
+        office = "";
+        description = "";
+        salary = 0.0;
+    }
+    
     public Employees(int _id, String _name, int _age, String _addr, int _rg, int _cpf)
     {
         this.setId(_id);
@@ -23,6 +37,9 @@ public class Employees extends Persons {
         this.setRg(_rg);
         this.setCpf(_cpf);
         this.setStatus(true);
+        office = "";
+        description = "";
+        salary = 0.0;
     }
     
     public Employees(int _id, String _name, int _age, String _addr, int _rg, int _cpf, String _office)
@@ -35,6 +52,8 @@ public class Employees extends Persons {
         this.setCpf(_cpf);
         this.setStatus(true);
         office = _office;
+        description = "";
+        salary = 0.0;
     }
     
     public Employees(int _id, String _name, int _age, String _addr, int _rg, int _cpf, String _office, String _desc)
@@ -48,6 +67,7 @@ public class Employees extends Persons {
         this.setStatus(true);
         office = _office;
         description = _desc;
+        salary = 0.0;
     }
     
     public Employees(int _id, String _name, int _age, String _addr, int _rg, int _cpf, String _office, String _desc, double _sal)
