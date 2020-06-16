@@ -11,7 +11,7 @@ package br.com.makesystecnologia.businessmgntsys;
  */
 public class Clients extends Persons {
     protected int walletId;
-    protected double walletBalance;
+    protected double walletBallance;
     
     public Clients()
     {
@@ -23,7 +23,7 @@ public class Clients extends Persons {
         this.setCpf(0);
         this.setStatus(false);
         walletId = 0;
-        walletBalance = 0.0;
+        walletBallance = 0.0;
     }
     
     public Clients(int _id, String _name, int _age, String _addr, int _rg, int _cpf)
@@ -36,7 +36,7 @@ public class Clients extends Persons {
         this.setCpf(_cpf);
         this.setStatus(true);
         walletId = 0;
-        walletBalance = 0.0;
+        walletBallance = 0.0;
     }
     
     public Clients(int _id, String _name, int _age, String _addr, int _rg, int _cpf, int _wallet)
@@ -49,7 +49,7 @@ public class Clients extends Persons {
         this.setCpf(_cpf);
         this.setStatus(true);
         walletId =  _wallet;
-        walletBalance = 0.0;
+        walletBallance = 0.0;
     }
     
     public Clients(int _id, String _name, int _age, String _addr, int _rg, int _cpf, int _wallet, double _walletBal)
@@ -62,7 +62,7 @@ public class Clients extends Persons {
         this.setCpf(_cpf);
         this.setStatus(true);
         walletId = _wallet;
-        walletBalance = _walletBal;
+        walletBallance = _walletBal;
     }
     
     public int getWalletId()
@@ -70,9 +70,9 @@ public class Clients extends Persons {
         return walletId;
     }
     
-    public double getWalletBalance()
+    public double getWalletBallance()
     {
-        return walletBalance;
+        return walletBallance;
     }
     
     public void setWalletId(int _wallet)
@@ -80,19 +80,19 @@ public class Clients extends Persons {
         walletId = _wallet;
     }
     
-    public void setWalletBalance(double _walletBal)
+    public void setWalletBallance(double _walletBal)
     {
-        walletBalance = _walletBal;
+        walletBallance = _walletBal;
     }
     
     public void increaseWalletBalance(double _val)
     {
-        this.setWalletBalance(this.getWalletBalance()+_val);
+        this.setWalletBallance(this.getWalletBallance()+_val);
     }
         
     public void decreaseWalletBalance(double _val)
     {
-        this.setWalletBalance(this.getWalletBalance()-_val);
+        this.setWalletBallance(this.getWalletBallance()-_val);
     }
     
     public void setStatusActived()

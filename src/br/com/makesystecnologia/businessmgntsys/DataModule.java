@@ -6,8 +6,7 @@
 package br.com.makesystecnologia.businessmgntsys;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 /**
  *
@@ -19,6 +18,8 @@ public class DataModule {
     protected String userDb;
     protected String passDb;
     protected boolean status;
+    
+    private Statement smt;
     
     public DataModule()
     {
@@ -67,7 +68,6 @@ public class DataModule {
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }  
@@ -82,45 +82,38 @@ public class DataModule {
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
     
     public void updateData(String sqlQuery)
     {
-        Statement smt;
-        
         if(this.getStatus()) {
             try {
                 smt = con.createStatement();
                 smt.executeUpdate(sqlQuery);
                 smt.close();
-                System.out.println("Operação realizada com sucesso!");
+                System.out.println("Operação 'updateData' realizada com sucesso!");
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }        
     }
     
     public ResultSet queryData(String sqlQuery)
     {
-        Statement smt;
         ResultSet rs;
         
         if(this.getStatus()) {
             try {
                 smt = con.createStatement();
                 rs = smt.executeQuery(sqlQuery);
-                smt.close();
-                //System.out.println("Operação realizada com sucesso!");
+                System.out.println("Operação 'queryData' realizada com sucesso!");
                 return rs;
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return (null);
@@ -135,7 +128,8 @@ public class DataModule {
         this.connectDb();
         
         sql = "INSERT INTO CLIENTS VALUES(";
-        sql += "'"+_name+"'";
+        sql += String.valueOf(id);
+        sql += ",'"+_name+"'";
         sql += ","+String.valueOf(_age);
         sql += ",'"+_addr+"'";
         sql += ","+String.valueOf(_rg);
@@ -143,11 +137,11 @@ public class DataModule {
         sql += ","+String.valueOf(_status);
         sql += ","+String.valueOf(_wallet);
         sql += ","+String.valueOf(_walletBal);
-        sql += ");";
+        sql += ",null);";
         
         this.updateData(sql);
 
-        rs = this.queryData("SELECT LAST_INSERT_ID();");
+        rs = this.queryData("SELECT LAST_INSERT_ID() AS ID;");
         
         if (rs != null) {
             try {
@@ -155,10 +149,10 @@ public class DataModule {
                     id = rs.getInt("ID");
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -175,19 +169,21 @@ public class DataModule {
         this.connectDb();
         
         sql = "INSERT INTO CLIENTS VALUES(";
-        sql += "'"+client.getName()+"'";
+        if (client.getId() != 0) sql += String.valueOf(client.getId());
+        else sql += String.valueOf(0);
+        sql += ",'"+client.getName()+"'";
         sql += ","+String.valueOf(client.getAge());
         sql += ",'"+client.getAddress()+"'";
         sql += ","+String.valueOf(client.getRg());
         sql += ","+String.valueOf(client.getCpf());
         sql += ","+String.valueOf(client.getStatus());
         sql += ","+String.valueOf(client.getWalletId());
-        sql += ","+String.valueOf(client.getWalletBalance());
-        sql += ");";
+        sql += ","+String.valueOf(client.getWalletBallance());
+        sql += ",null);";
         
         this.updateData(sql);
 
-        rs = this.queryData("SELECT LAST_INSERT_ID();");
+        rs = this.queryData("SELECT LAST_INSERT_ID() AS ID;");
         
         if (rs != null) {
             try {
@@ -195,10 +191,10 @@ public class DataModule {
                     client.setId(rs.getInt("ID"));
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -214,7 +210,8 @@ public class DataModule {
         this.connectDb();
         
         sql = "INSERT INTO EMPLOYEES VALUES(";
-        sql += "'"+_name+"'";
+        sql += String.valueOf(id);
+        sql += ",'"+_name+"'";
         sql += ","+String.valueOf(_age);
         sql += ",'"+_addr+"'";
         sql += ","+String.valueOf(_rg);
@@ -223,11 +220,11 @@ public class DataModule {
         sql += ",'"+_office+"'";
         sql += ",'"+_desc+"'";
         sql += ","+String.valueOf(_sal);
-        sql += ");";
+        sql += ",null);";
         
         this.updateData(sql);
 
-        rs = this.queryData("SELECT LAST_INSERT_ID();");
+        rs = this.queryData("SELECT LAST_INSERT_ID() AS ID;");
         
         if (rs != null) {
             try {
@@ -235,10 +232,10 @@ public class DataModule {
                     id = rs.getInt("ID");
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -255,6 +252,8 @@ public class DataModule {
         this.connectDb();
         
         sql = "INSERT INTO EMPLOYEES VALUES(";
+        if (employee.getId() != 0) sql += String.valueOf(employee.getId());
+        else sql += String.valueOf(0);
         sql += "'"+employee.getName()+"'";
         sql += ","+String.valueOf(employee.getAge());
         sql += ",'"+employee.getAddress()+"'";
@@ -264,11 +263,11 @@ public class DataModule {
         sql += ",'"+employee.getOffice()+"'";
         sql += ",'"+employee.getDescription()+"'";
         sql += ","+String.valueOf(employee.getSalary());
-        sql += ");";
+        sql += ",null);";
         
         this.updateData(sql);
 
-        rs = this.queryData("SELECT LAST_INSERT_ID();");
+        rs = this.queryData("SELECT LAST_INSERT_ID() AS ID;");
         
         if (rs != null) {
             try {
@@ -276,10 +275,10 @@ public class DataModule {
                     employee.setId(rs.getInt("ID"));
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -295,7 +294,8 @@ public class DataModule {
         this.connectDb();
         
         sql = "INSERT INTO OPERATORS VALUES(";
-        sql += "'"+_name+"'";
+        sql += String.valueOf(id);
+        sql += ",'"+_name+"'";
         sql += ","+String.valueOf(_age);
         sql += ",'"+_addr+"'";
         sql += ","+String.valueOf(_rg);
@@ -303,11 +303,11 @@ public class DataModule {
         sql += ","+String.valueOf(_status);
         sql += ",'"+_user+"'";
         sql += ",'"+_pass+"'";
-        sql += ");";
+        sql += ",null);";
         
         this.updateData(sql);
 
-        rs = this.queryData("SELECT LAST_INSERT_ID();");
+        rs = this.queryData("SELECT LAST_INSERT_ID() AS ID;");
         
         if (rs != null) {
             try {
@@ -315,10 +315,10 @@ public class DataModule {
                     id = rs.getInt("ID");
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -335,6 +335,8 @@ public class DataModule {
         this.connectDb();
         
         sql = "INSERT INTO OPERATORS VALUES(";
+        if (operator.getId() != 0) sql += String.valueOf(operator.getId());
+        else sql += String.valueOf(0);
         sql += "'"+operator.getName()+"'";
         sql += ","+String.valueOf(operator.getAge());
         sql += ",'"+operator.getAddress()+"'";
@@ -343,11 +345,11 @@ public class DataModule {
         sql += ","+String.valueOf(operator.getStatus());
         sql += ",'"+operator.getUser()+"'";
         sql += ",'"+operator.getPassword()+"'";
-        sql += ");";
+        sql += ",null);";
         
         this.updateData(sql);
 
-        rs = this.queryData("SELECT LAST_INSERT_ID();");
+        rs = this.queryData("SELECT LAST_INSERT_ID() AS ID;");
         
         if (rs != null) {
             try {
@@ -355,10 +357,10 @@ public class DataModule {
                     operator.setId(rs.getInt("ID"));
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -374,7 +376,8 @@ public class DataModule {
         this.connectDb();
         
         sql = "INSERT INTO PRODUCTS VALUES(";
-        sql += "'"+_name+"'";
+        sql += String.valueOf(id);
+        sql += ",'"+_name+"'";
         sql += ",'"+_desc+"'";
         sql += ","+String.valueOf(_amount);
         sql += ","+String.valueOf(_price);
@@ -382,11 +385,11 @@ public class DataModule {
         sql += ","+String.valueOf(_width);
         sql += ","+String.valueOf(_weight);
         sql += ","+String.valueOf(_status);
-        sql += ");";
+        sql += ",null);";
         
         this.updateData(sql);
         
-        rs = this.queryData("SELECT LAST_INSERT_ID();");
+        rs = this.queryData("SELECT LAST_INSERT_ID() AS ID;");
         
         if (rs != null) {
             try {
@@ -394,10 +397,10 @@ public class DataModule {
                     id = rs.getInt("ID");
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -414,6 +417,8 @@ public class DataModule {
         this.connectDb();
         
         sql = "INSERT INTO PRODUCTS VALUES(";
+        if (product.getId() != 0) sql += String.valueOf(product.getId());
+        else sql += String.valueOf(0);
         sql += "'"+product.getName()+"'";
         sql += ",'"+product.getDescription()+"'";
         sql += ","+String.valueOf(product.getAmount());
@@ -422,11 +427,11 @@ public class DataModule {
         sql += ","+String.valueOf(product.width);
         sql += ","+String.valueOf(product.weight);
         sql += ","+String.valueOf(product.getStatus());
-        sql += ");";
+        sql += ",null);";
         
         this.updateData(sql);
         
-        rs = this.queryData("SELECT LAST_INSERT_ID();");
+        rs = this.queryData("SELECT LAST_INSERT_ID() AS ID;");
         
         if (rs != null) {
             try {
@@ -434,10 +439,10 @@ public class DataModule {
                     product.setId(rs.getInt("ID"));
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
@@ -452,7 +457,6 @@ public class DataModule {
         this.connectDb();
         
         sql = "SELECT * FROM CLIENTS";
-        //sql += " WHERE ID = "+String.valueOf(client.id);
         sql += " WHERE ID = "+String.valueOf(client.getId());
         sql += ";";
         
@@ -461,14 +465,6 @@ public class DataModule {
         if (rs != null) {
             try {
                 while (rs.next()) {
-                    /*client.name = rs.getString("NAME");
-                    client.age = rs.getInt("AGE");
-                    client.address = rs.getString("ADDRS");
-                    client.rg = rs.getInt("RG");
-                    client.cpf = rs.getInt("CPF");
-                    client.status = rs.getBoolean("STATUS");
-                    client.walletId = rs.getInt("WALLET_ID");
-                    client.walletBalance = rs.getDouble("WALLET_BALANCE");*/
                     client.setName(rs.getString("NAME"));
                     client.setAge(rs.getInt("AGE"));
                     client.setAddress(rs.getString("ADDRS"));
@@ -476,13 +472,50 @@ public class DataModule {
                     client.setCpf(rs.getInt("CPF"));
                     client.setStatus(rs.getBoolean("STATUS"));
                     client.setWalletId(rs.getInt("WALLET_ID"));
-                    client.setWalletBalance(rs.getDouble("WALLET_BALANCE"));
+                    client.setWalletBallance(rs.getDouble("WALLET_BALLANCE"));
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        this.desconnectDb();
+    }
+    
+    public void selectClients(List<Clients> clientList)
+    {
+        String sql;
+        ResultSet rs;
+        
+        this.connectDb();
+        
+        sql = "SELECT * FROM CLIENTS;";
+        
+        rs = this.queryData(sql);
+        
+        if (rs != null) {
+            try {
+                while (rs.next()) {
+                    Clients client = new Clients();
+                    client.setId(rs.getInt("ID"));
+                    client.setName(rs.getString("NAME"));
+                    client.setAge(rs.getInt("AGE"));
+                    client.setAddress(rs.getString("ADDRS"));
+                    client.setRg(rs.getInt("RG"));
+                    client.setCpf(rs.getInt("CPF"));
+                    client.setStatus(rs.getBoolean("STATUS"));
+                    client.setWalletId(rs.getInt("WALLET_ID"));
+                    client.setWalletBallance(rs.getDouble("WALLET_BALLANCE"));
+                    clientList.add(client);
+                }
+                rs.close();
+                smt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.err.println(ex.getClass().getName()+": "+ex.getMessage());
             }
         }
         
@@ -497,7 +530,6 @@ public class DataModule {
         this.connectDb();
         
         sql = "SELECT * FROM EMPLOYEES";
-        //sql += " WHERE ID = "+String.valueOf(employee.id);
         sql += " WHERE ID = "+String.valueOf(employee.getId());
         sql += ";";
         
@@ -506,15 +538,6 @@ public class DataModule {
         if (rs != null) {
             try {
                 while (rs.next()) {
-                    /*employee.name = rs.getString("NAME");
-                    employee.age = rs.getInt("AGE");
-                    employee.address = rs.getString("ADDRS");
-                    employee.rg = rs.getInt("RG");
-                    employee.cpf = rs.getInt("CPF");
-                    employee.status = rs.getBoolean("STATUS");
-                    employee.office = rs.getString("OFFICE");
-                    employee.description = rs.getString("DESCRIPTION");
-                    employee.salary = rs.getDouble("SALARY");*/
                     employee.setName(rs.getString("NAME"));
                     employee.setAge(rs.getInt("AGE"));
                     employee.setAddress(rs.getString("ADDRS"));
@@ -526,10 +549,48 @@ public class DataModule {
                     employee.setSalary(rs.getDouble("SALARY"));
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        this.desconnectDb();
+    }
+    
+    public void selectEmployees(List<Employees> employeeList)
+    {
+        String sql;
+        ResultSet rs;
+        
+        this.connectDb();
+        
+        sql = "SELECT * FROM EMPLOYEES;";
+        
+        rs = this.queryData(sql);
+        
+        if (rs != null) {
+            try {
+                while (rs.next()) {
+                    Employees employee = new Employees();
+                    employee.setId(rs.getInt("ID"));
+                    employee.setName(rs.getString("NAME"));
+                    employee.setAge(rs.getInt("AGE"));
+                    employee.setAddress(rs.getString("ADDRS"));
+                    employee.setRg(rs.getInt("RG"));
+                    employee.setCpf(rs.getInt("CPF"));
+                    employee.setStatus(rs.getBoolean("STATUS"));
+                    employee.setOffice(rs.getString("OFFICE"));
+                    employee.setDescription(rs.getString("DESCRIPTION"));
+                    employee.setSalary(rs.getDouble("SALARY"));
+                    employeeList.add(employee);
+                }
+                rs.close();
+                smt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.err.println(ex.getClass().getName()+": "+ex.getMessage());
             }
         }
         
@@ -544,7 +605,6 @@ public class DataModule {
         this.connectDb();
         
         sql = "SELECT * FROM OPERATORS";
-        //sql += " WHERE ID = "+String.valueOf(operator.id);
         sql += " WHERE ID = "+String.valueOf(operator.getId());
         sql += ";";
         
@@ -553,14 +613,6 @@ public class DataModule {
         if (rs != null) {
             try {
                 while (rs.next()) {
-                    /*operator.name = rs.getString("NAME");
-                    operator.age = rs.getInt("AGE");
-                    operator.address = rs.getString("ADDRS");
-                    operator.rg = rs.getInt("RG");
-                    operator.cpf = rs.getInt("CPF");
-                    operator.status = rs.getBoolean("STATUS");
-                    operator.user = rs.getString("USER");
-                    operator.pass = rs.getString("PASS");*/
                     operator.setName(rs.getString("NAME"));
                     operator.setAge(rs.getInt("AGE"));
                     operator.setAddress(rs.getString("ADDRS"));
@@ -571,10 +623,47 @@ public class DataModule {
                     operator.setPassword(rs.getString("PASS"));
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        this.desconnectDb();
+    }
+    
+    public void selectOperators(List<Operators> operatorList)
+    {
+        String sql;
+        ResultSet rs;
+        
+        this.connectDb();
+        
+        sql = "SELECT * FROM OPERATORS;";
+        
+        rs = this.queryData(sql);
+        
+        if (rs != null) {
+            try {
+                while (rs.next()) {
+                    Operators operator = new Operators();
+                    operator.setId(rs.getInt("ID"));
+                    operator.setName(rs.getString("NAME"));
+                    operator.setAge(rs.getInt("AGE"));
+                    operator.setAddress(rs.getString("ADDRS"));
+                    operator.setRg(rs.getInt("RG"));
+                    operator.setCpf(rs.getInt("CPF"));
+                    operator.setStatus(rs.getBoolean("STATUS"));
+                    operator.setUser(rs.getString("USER"));
+                    operator.setPassword(rs.getString("PASS"));
+                    operatorList.add(operator);
+                }
+                rs.close();
+                smt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.err.println(ex.getClass().getName()+": "+ex.getMessage());
             }
         }
         
@@ -589,7 +678,6 @@ public class DataModule {
         this.connectDb();
         
         sql = "SELECT * FROM PRODUCTS";
-        //sql += " WHERE ID = "+String.valueOf(product.id);
         sql += " WHERE ID = "+String.valueOf(product.getId());
         sql += ";";
         
@@ -598,14 +686,6 @@ public class DataModule {
         if (rs != null) {
             try {
                 while (rs.next()) {
-                    /*product.name = rs.getString("NAME");
-                    product.description = rs.getString("DESCRIPTION");
-                    product.amount = rs.getInt("AMOUNT");
-                    product.price = rs.getDouble("PRICE");
-                    product.height = rs.getInt("HEIGHT");
-                    product.width = rs.getInt("WIDTH");
-                    product.weight = rs.getInt("WEIGHT");
-                    product.status = rs.getBoolean("STATUS");*/
                     product.setName(rs.getString("NAME"));
                     product.setDescription(rs.getString("DESCRIPTION"));
                     product.setAmount(rs.getInt("AMOUNT"));
@@ -616,10 +696,47 @@ public class DataModule {
                     product.setStatus(rs.getBoolean("STATUS"));
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        this.desconnectDb();
+    }
+    
+    public void selectProducts(List<Products> productList)
+    {
+        String sql;
+        ResultSet rs;
+        
+        this.connectDb();
+        
+        sql = "SELECT * FROM PRODUCTS;";
+        
+        rs = this.queryData(sql);
+        
+        if (rs != null) {
+            try {
+                while (rs.next()) {
+                    Products product = new Products();
+                    product.setId(rs.getInt("ID"));
+                    product.setName(rs.getString("NAME"));
+                    product.setDescription(rs.getString("DESCRIPTION"));
+                    product.setAmount(rs.getInt("AMOUNT"));
+                    product.setPrice(rs.getDouble("PRICE"));
+                    product.setHeight(rs.getInt("HEIGHT"));
+                    product.setWidth(rs.getInt("WIDTH"));
+                    product.setWeight(rs.getInt("WEIGHT"));
+                    product.setStatus(rs.getBoolean("STATUS"));
+                    productList.add(product);
+                }
+                rs.close();
+                smt.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.err.println(ex.getClass().getName()+": "+ex.getMessage());
             }
         }
         
@@ -662,7 +779,7 @@ public class DataModule {
         sql += ",CPF = "+String.valueOf(client.getCpf());
         sql += ",STATUS = "+String.valueOf(client.getStatus());
         sql += ",WALLET_ID = "+String.valueOf(client.getWalletId());
-        sql += ",WALLET_BALLANCE = "+String.valueOf(client.getWalletBalance());
+        sql += ",WALLET_BALLANCE = "+String.valueOf(client.getWalletBallance());
         sql += " WHERE ID = "+String.valueOf(client.getId());
         sql += ";";
         
@@ -1078,7 +1195,7 @@ public class DataModule {
         this.connectDb();
         
         sql = "SELECT COUNT(*) AS TOTAL FROM OPERATORS";
-        sql += " WHERE USER = "+_user+" AND PASS = "+_pass+";";
+        sql += " WHERE USER = '"+_user+"' AND PASS = '"+_pass+"';";
         
         rs = this.queryData(sql);
         
@@ -1088,12 +1205,14 @@ public class DataModule {
                     if (rs.getInt("TOTAL") > 0) success = true;
                 }
                 rs.close();
+                smt.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 System.err.println(ex.getClass().getName()+": "+ex.getMessage());
-                //Logger.getLogger(DataModule.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        this.desconnectDb();
         
         return success;
     }
