@@ -1,5 +1,5 @@
-Este repositório contem o trabalho de uma aplicação java com banco de dados mysql.
+Este repositório contém a demonstração de uma aplicação escrita em Java com conexão ao banco de dados MySql.
 
-Autores: Tulio Adriano Muniz Mendez e Jeorkley Gomes Silva
+Autor: Tulio Adriano Muniz
 
 Link do video no youtube: https://youtu.be/F3p4q96W61g
