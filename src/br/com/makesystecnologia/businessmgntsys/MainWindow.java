@@ -1017,9 +1017,9 @@ public class MainWindow extends javax.swing.JFrame {
             cboxStatusClient.setSelectedIndex(0);
         }
         cboxStatusClient.setEnabled(false);
-        client.setWalletId(Integer.parseInt(txtRgClient.getText()));
+        client.setWalletId(Integer.parseInt(txtWalletId.getText()));
         txtWalletId.setEnabled(false);
-        client.setWalletBallance(Double.parseDouble(txtRgClient.getText()));
+        client.setWalletBallance(Double.parseDouble(txtWallBallance.getText()));
         txtWallBallance.setEnabled(false);
         btnPrevClient.setEnabled(true);
         btnNextClient.setEnabled(true);
